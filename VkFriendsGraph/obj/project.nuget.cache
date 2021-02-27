@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "yU/wtsSCcV9KtijdPPdW5jkgxUNVG6X4WSxMM4eO6IiOYUwL3IKEGPCwR3GWbGrV0mQV5rviU33tXjAo6LlNog==",
+  "success": true,
+  "projectFilePath": "D:\\Projects\\VkFriendsGraph\\VkFriendsGraph\\VkFriendsGraph.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ilyaf\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

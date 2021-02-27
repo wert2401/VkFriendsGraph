@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "iN7vE9YA3jtKZF0TLJ7IKFl2X5R6R+y/SAg4tdCuSVOvmfJEHMLT/GqFK2kqOlKF8NbSKQVvG/cmG9msPfGS1A==",
+  "success": true,
+  "projectFilePath": "D:\\Projects\\VkFriendsGraph\\VkFriendsGraph.BussinesLogic\\VkFriendsGraph.BussinesLogic.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ilyaf\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
