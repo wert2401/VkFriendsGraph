@@ -50,7 +50,7 @@ namespace VkFriendsGraph.BussinesLogic.Vk
             {
                 output += $"Birthday: {BornDate}"; 
             }
-            return output + "\n";
+            return output;
         }
     }
 

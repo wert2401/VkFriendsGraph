@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -14,17 +12,17 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using VkFriendsGraph.ViewModels;
 
-namespace VkFriendsGraph
+namespace VkFriendsGraph.Pages
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Логика взаимодействия для FriendsPage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class FriendsPage : Page
     {
-        public MainWindow()
+        public FriendsPage(object friendsList)
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel(Frame);
+            DataContext = new FriendsPageViewModel(friendsList);
         }
     }
 }

@@ -21,3 +21,7 @@ D:\Projects\VkFriendsGraph\VkFriendsGraph\bin\Debug\netcoreapp3.1\Newtonsoft.Jso
 D:\Projects\VkFriendsGraph\VkFriendsGraph\bin\Debug\netcoreapp3.1\VkFriendsGraph.BussinesLogic.dll
 D:\Projects\VkFriendsGraph\VkFriendsGraph\bin\Debug\netcoreapp3.1\VkFriendsGraph.BussinesLogic.pdb
 D:\Projects\VkFriendsGraph\VkFriendsGraph\obj\Debug\netcoreapp3.1\VkFriendsGraph.csproj.CopyComplete
+D:\Projects\VkFriendsGraph\VkFriendsGraph\obj\Debug\netcoreapp3.1\Pages\FriendsPage.g.cs
+D:\Projects\VkFriendsGraph\VkFriendsGraph\obj\Debug\netcoreapp3.1\Pages\SearchPage.g.cs
+D:\Projects\VkFriendsGraph\VkFriendsGraph\obj\Debug\netcoreapp3.1\Pages\FriendsPage.baml
+D:\Projects\VkFriendsGraph\VkFriendsGraph\obj\Debug\netcoreapp3.1\Pages\SearchPage.baml

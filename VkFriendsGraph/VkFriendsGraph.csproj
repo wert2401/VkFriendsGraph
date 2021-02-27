@@ -10,4 +10,8 @@
     <ProjectReference Include="..\VkFriendsGraph.BussinesLogic\VkFriendsGraph.BussinesLogic.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Styles\" />
+  </ItemGroup>
+
 </Project>
