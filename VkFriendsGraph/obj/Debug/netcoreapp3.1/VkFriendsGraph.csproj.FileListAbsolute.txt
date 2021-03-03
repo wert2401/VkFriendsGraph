@@ -25,3 +25,6 @@ D:\Projects\VkFriendsGraph\VkFriendsGraph\obj\Debug\netcoreapp3.1\Pages\FriendsP
 D:\Projects\VkFriendsGraph\VkFriendsGraph\obj\Debug\netcoreapp3.1\Pages\SearchPage.g.cs
 D:\Projects\VkFriendsGraph\VkFriendsGraph\obj\Debug\netcoreapp3.1\Pages\FriendsPage.baml
 D:\Projects\VkFriendsGraph\VkFriendsGraph\obj\Debug\netcoreapp3.1\Pages\SearchPage.baml
+D:\Projects\VkFriendsGraph\VkFriendsGraph\obj\Debug\netcoreapp3.1\Pages\FriendNode.g.cs
+D:\Projects\VkFriendsGraph\VkFriendsGraph\obj\Debug\netcoreapp3.1\GeneratedInternalTypeHelper.g.cs
+D:\Projects\VkFriendsGraph\VkFriendsGraph\obj\Debug\netcoreapp3.1\Pages\FriendNode.baml

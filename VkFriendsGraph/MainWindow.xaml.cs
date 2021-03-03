@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using VkFriendsGraph.Helpers;
 using VkFriendsGraph.ViewModels;
 
 namespace VkFriendsGraph
@@ -25,6 +26,29 @@ namespace VkFriendsGraph
         {
             InitializeComponent();
             DataContext = new MainWindowViewModel(Frame);
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Left)
+            {
+                MovingHelper.Move(MoveDirection.Left);
+            }
+
+            if (e.Key == Key.Right)
+            {
+                MovingHelper.Move(MoveDirection.Right);
+            }
+
+            if (e.Key == Key.Up)
+            {
+                MovingHelper.Move(MoveDirection.Up);
+            }
+
+            if (e.Key == Key.Down)
+            {
+                MovingHelper.Move(MoveDirection.Down);
+            }
         }
     }
 }

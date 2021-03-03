@@ -14,27 +14,10 @@ namespace VkFriendsGraph.ViewModels
 {
     public class MainWindowViewModel
     {
-        public Frame CurrentFrame { get; set; }
-
         public MainWindowViewModel(Frame frame)
         {
-            CurrentFrame = frame;
-            CurrentFrame.Content = new SearchPage();
-        }
-
-        public void Navigate(Pages.Pages page, object parametr)
-        {
-            switch (page)
-            {
-                case Pages.Pages.SearchPage:
-                    CurrentFrame.Content = new SearchPage();
-                    break;
-                case Pages.Pages.FriendsPage:
-                    CurrentFrame.Content = new FriendsPage(parametr);
-                    break;
-                default:
-                    break;
-            }
+            NavigationHelper.MainFrame = frame;
+            NavigationHelper.Navigate(Pages.Pages.SearchPage);
         }
     }
 }

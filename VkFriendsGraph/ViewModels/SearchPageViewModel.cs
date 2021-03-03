@@ -9,7 +9,6 @@ namespace VkFriendsGraph.ViewModels
 {
     class SearchPageViewModel
     {
-        private List<Person> list { get; set; }
         public RelayCommand GetFriendsCommand { get; private set; }
 
         readonly VkLogic vk;
@@ -20,10 +19,11 @@ namespace VkFriendsGraph.ViewModels
             GetFriendsCommand = new RelayCommand(getFriends);
         }
 
-        private async void getFriends(object adress)
+        private async void getFriends(object address)
         {
-            List<Person> list = await vk.GetPersonFriends((string)adress);
-            //MessageBox.Show(list.Count.ToString());
+            List<Person> list = await vk.GetPersonFriends((string)address);
+            NavigationHelper.MainFrame = null;
+            NavigationHelper.Navigate(Pages.Pages.FriendsPage, list);
         }
     }
 }

@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1;
 D:\Projects\VkFriendsGraph\VkFriendsGraph\App.xaml
-31256393510
+4-1303221588
 
-12483618749
+15-842351707
 194-465986026
-MainWindow.xaml;Pages\FriendsPage.xaml;Pages\SearchPage.xaml;
+MainWindow.xaml;Pages\FriendNode.xaml;Pages\FriendsPage.xaml;Pages\SearchPage.xaml;
 
 False
 

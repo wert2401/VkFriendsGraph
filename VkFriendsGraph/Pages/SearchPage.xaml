@@ -10,6 +10,6 @@
 
     <StackPanel Background="Azure" Width="200" Height="100">
         <TextBox Text="x__xo" Margin="0 5" BorderThickness="1" x:Name="textBox" TextAlignment="Center"/>
-        <Button Content="Получить друзей" Command="{Binding GetFriendsCommand}" CommandParameter="{Binding ElementName=textBox, Path=Text}" />
+        <Button Content="Получить друзей" Command="{Binding GetFriendsCommand}" CommandParameter="{Binding Text, ElementName=textBox}" />
     </StackPanel>
 </Page>

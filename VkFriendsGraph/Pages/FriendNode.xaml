@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="VkFriendsGraph.Pages.FriendNode"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VkFriendsGraph.Pages"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="50"
+             Name="FriendNodePage">
+    <Grid Background="Transparent" Width="50" Height="50">
+        <Border BorderBrush="Gray" BorderThickness="2" CornerRadius="100">
+            <Ellipse Width="40" Height="40">
+                <Ellipse.Fill>
+                    <ImageBrush ImageSource="{Binding ImageUrl, ElementName=FriendNodePage}" Stretch="Fill"></ImageBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+        </Border>
+    </Grid>
+</UserControl>

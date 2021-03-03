@@ -1,0 +1,9 @@
+D:\Projects\VkFriendsGraph\VkFriendsGraph.BussinesLogic\bin\x86\Debug\netcoreapp3.1\VkFriendsGraph.BussinesLogic.deps.json
+D:\Projects\VkFriendsGraph\VkFriendsGraph.BussinesLogic\bin\x86\Debug\netcoreapp3.1\VkFriendsGraph.BussinesLogic.dll
+D:\Projects\VkFriendsGraph\VkFriendsGraph.BussinesLogic\bin\x86\Debug\netcoreapp3.1\VkFriendsGraph.BussinesLogic.pdb
+D:\Projects\VkFriendsGraph\VkFriendsGraph.BussinesLogic\obj\x86\Debug\netcoreapp3.1\VkFriendsGraph.BussinesLogic.csprojAssemblyReference.cache
+D:\Projects\VkFriendsGraph\VkFriendsGraph.BussinesLogic\obj\x86\Debug\netcoreapp3.1\VkFriendsGraph.BussinesLogic.AssemblyInfoInputs.cache
+D:\Projects\VkFriendsGraph\VkFriendsGraph.BussinesLogic\obj\x86\Debug\netcoreapp3.1\VkFriendsGraph.BussinesLogic.AssemblyInfo.cs
+D:\Projects\VkFriendsGraph\VkFriendsGraph.BussinesLogic\obj\x86\Debug\netcoreapp3.1\VkFriendsGraph.BussinesLogic.csproj.CoreCompileInputs.cache
+D:\Projects\VkFriendsGraph\VkFriendsGraph.BussinesLogic\obj\x86\Debug\netcoreapp3.1\VkFriendsGraph.BussinesLogic.dll
+D:\Projects\VkFriendsGraph\VkFriendsGraph.BussinesLogic\obj\x86\Debug\netcoreapp3.1\VkFriendsGraph.BussinesLogic.pdb
