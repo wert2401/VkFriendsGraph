@@ -22,39 +22,69 @@ namespace VkFriendsGraph.Pages
     /// </summary>
     public partial class FriendsPage : Page
     {
-        private int indent = 60;
-        private Thickness lastCoord = new Thickness(0);
-        public FriendsPage(object friendsList)
+        private Point center;
+        public FriendsPage(object address)
         {
             InitializeComponent();
-            MovingHelper.Grid = MainGrid;
-            var pageVm = new FriendsPageViewModel(friendsList);
-            pageVm.People.CollectionChanged += People_CollectionChanged;
+            MovingHelper.Canvas = MainCanvas;
+            center = new Point(SystemParameters.PrimaryScreenWidth / 2d, SystemParameters.PrimaryScreenHeight / 2d - 60);
+
+            var pageVm = new FriendsPageViewModel();
+            pageVm.PeopleUpdated += OnPeopleUpdated;
             DataContext = pageVm;
-            pageVm.UpdateFriends();
+
+            pageVm.GetFriends((string)address);
         }
 
-        private void People_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void OnPeopleUpdated((Person, List<Person>) dict)
         {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
-            {
-                foreach (Person person in e.NewItems)
-                {
-                    if (ContentGrid.Children.Count > 0)
-                    {
-                        FriendNode lastElement = (FriendNode)ContentGrid.Children[ContentGrid.Children.Count - 1];
-                        lastCoord = lastElement.Margin;
-                    }
+            (Person person, List<Person> people) = dict;
 
-                    FriendNode fn = new FriendNode();
-                    fn.ImageUrl = person.PhotoUrl;
-                    fn.HorizontalAlignment = HorizontalAlignment.Left;
-                    fn.VerticalAlignment = VerticalAlignment.Top;
-                    fn.Width = 50;
-                    fn.Height = 50;
-                    fn.Margin = new Thickness(lastCoord.Left + indent, 0, 0, 0);
-                    ContentGrid.Children.Add(fn);
-                }
+            FriendNode centralFn = new FriendNode();
+            centralFn.Width = 100;
+            centralFn.Height = 100;
+            centralFn.ImageUrl = person.PhotoUrl;
+            centralFn.SetPosition(center);
+            centralFn.SetZIndex(2);
+            MainCanvas.Children.Add(centralFn);
+
+            ShowPeople(people);
+        }
+
+        private void ShowPeople(List<Person> people)
+        {
+            double alphaStep = 2 * Math.PI / people.Count;
+            double alpha = 0;
+            double offset = people.Count * 10;
+
+            double x = center.X + offset * Math.Sin(alpha);
+            double y = center.Y + offset * Math.Cos(alpha);
+
+            Point currentPos = new Point(x, y);
+
+            foreach (Person p in people)
+            {
+                Line line = new Line();
+                line.X1 = center.X ;
+                line.Y1 = center.Y;
+                line.X2 = x;
+                line.Y2 = y;
+                line.Stroke = Brushes.Black;
+
+                FriendNode fn = new FriendNode();
+                fn.ImageUrl = p.PhotoUrl;
+                fn.SetZIndex(2);
+
+                fn.SetPosition(currentPos);
+
+                MainCanvas.Children.Add(line);
+                MainCanvas.Children.Add(fn);
+
+                alpha += alphaStep;
+                x = center.X + offset * Math.Sin(alpha);
+                y = center.Y + offset * Math.Cos(alpha);
+                currentPos.X = x;
+                currentPos.Y = y;
             }
         }
     }

@@ -15,6 +15,13 @@ namespace VkFriendsGraph.BussinesLogic.Vk
             return people;
         }
 
+        public static Person ParsePerson(string response)
+        {
+            JObject o = JObject.Parse(response);
+            Person p = o["response"].ToObject<List<Person>>()[0];
+            return p;
+        }
+
         public static bool TryParseError(string response)
         {
             Error e;
@@ -25,11 +32,5 @@ namespace VkFriendsGraph.BussinesLogic.Vk
             }
             return false;
         }
-
-        public static Person ParsePerson(string response)
-        {
-            return JsonConvert.DeserializeObject<Person>(response);
-        }
-
     }
 }

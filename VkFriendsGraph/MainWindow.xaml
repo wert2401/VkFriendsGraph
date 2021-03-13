@@ -6,8 +6,11 @@
         xmlns:local="clr-namespace:VkFriendsGraph"
         mc:Ignorable="d"
         Title="Friends Graph" Height="450" Width="800"
-        KeyDown="Window_KeyDown">
+        WindowStartupLocation="CenterScreen" WindowState="Maximized"
+        KeyDown="Window_KeyDown"
+        MouseWheel="Window_MouseWheel"
+        >
     <Grid>
-        <Frame NavigationUIVisibility="Hidden" x:Name="Frame" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <Frame NavigationUIVisibility="Hidden" x:Name="Frame" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0"/>
     </Grid>
 </Window>

@@ -23,19 +23,21 @@ namespace VkFriendsGraph.BussinesLogic.Vk
             string[] fields = new string[] { "bdate", "city", "photo_200_orig" };
             Dictionary<string, string> pars = new Dictionary<string, string>() { { "user_id", id.ToString() }, { "name_case", "nom" }, { "count", "200" }, { "order", "name" } };
             string method = "friends.get";
+
             string result = await MyHttpClient.Get(GetMethodUri(method, pars, fields));
             List<Person> people = JSONProcessor.ParsePeople(result);
             return people;
         }
 
-        public async Task<List<Person>> GetPersonFriends(string adress)
+        public async Task<List<Person>> GetPersonFriends(string address)
         {
-            string id = await GetPersonId(adress);
+            string id = await GetPersonId(address);
             if (id == "") throw new System.Exception("Cant get id of a person");
 
             string[] fields = new string[] { "bdate", "city", "photo_200_orig" };
-            Dictionary<string, string> pars = new Dictionary<string, string>() { { "user_id", id.ToString() }, { "name_case", "nom" }, { "count", "200" }, { "order", "name" } };
+            Dictionary<string, string> pars = new Dictionary<string, string>() { { "user_id", id }, { "name_case", "nom" }, { "count", "200" }, { "order", "name" } };
             string method = "friends.get";
+
             string result = await MyHttpClient.Get(GetMethodUri(method, pars, fields));
             List<Person> people = JSONProcessor.ParsePeople(result);
             return people;
@@ -53,12 +55,26 @@ namespace VkFriendsGraph.BussinesLogic.Vk
             return id.Split('_')[0];
         }
 
-        public async Task<string> GetPerson(string id)
+        public async Task<string> GetPerson(int id)
         {
-            Dictionary<string, string> pars = new Dictionary<string, string>() { { "user_ids", id }, { "name_case", "Nom" } };
+            Dictionary<string, string> pars = new Dictionary<string, string>() { { "user_ids", id.ToString() }, { "name_case", "Nom" } };
             string method = "users.get";
 
             return await MyHttpClient.Get(GetMethodUri(method, pars));
+        }
+
+        public async Task<Person> GetPerson(string address)
+        {
+            string id = await GetPersonId(address);
+            if (id == "") throw new System.Exception("Cant get id of a person");
+
+            string[] fields = new string[] { "photo_200_orig" };
+            Dictionary<string, string> pars = new Dictionary<string, string>() { { "user_ids", id }, { "name_case", "Nom" } };
+            string method = "users.get";
+
+            string result = await MyHttpClient.Get(GetMethodUri(method, pars, fields));
+            Person person = JSONProcessor.ParsePerson(result);
+            return person;
         }
 
         string GetMethodUri(string methodName, Dictionary<string, string> pars, string[] fields)

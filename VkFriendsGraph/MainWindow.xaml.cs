@@ -50,5 +50,17 @@ namespace VkFriendsGraph
                 MovingHelper.Move(MoveDirection.Down);
             }
         }
+
+        private void Window_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta > 0)
+            {
+                MovingHelper.Zoom(Zooming.ZoomIn);
+            }
+            else
+            {
+                MovingHelper.Zoom(Zooming.ZoomOut);
+            }
+        }
     }
 }

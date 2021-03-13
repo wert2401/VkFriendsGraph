@@ -11,21 +11,22 @@ namespace VkFriendsGraph.ViewModels
 {
     public class FriendsPageViewModel
     {
-        public ObservableCollection<Person> People { get; set; } = new ObservableCollection<Person>();
+        public Action<(Person, List<Person>)> PeopleUpdated { get; set; }
 
         private List<Person> people;
+        readonly VkLogic vk;
 
-        public FriendsPageViewModel(object friendsList)
+
+        public FriendsPageViewModel()
         {
-            people = friendsList as List<Person>;
+            vk = new VkLogic();
         }
 
-        public void UpdateFriends()
+        public async void GetFriends(string address)
         {
-            foreach (var person in people)
-            {
-                People.Add(person);
-            }
+            people = await vk.GetPersonFriends(address);
+            Person p = await vk.GetPerson(address);
+            PeopleUpdated?.Invoke((p, people));
         }
     }
 }

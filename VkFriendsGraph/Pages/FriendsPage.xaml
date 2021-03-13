@@ -6,9 +6,9 @@
       mc:Ignorable="d" 
       Title="FriendsPage">
 
-    <Grid x:Name="MainGrid">
-        <Grid x:Name="ContentGrid">
-        
-        </Grid>
+    <Grid x:Name="MainGrid" Background="LightYellow">
+        <Canvas x:Name="MainCanvas">
+            
+        </Canvas>
     </Grid>
 </Page>
