@@ -7,6 +7,7 @@ namespace VkFriendsGraph.Pages
     public enum Pages
     {
         SearchPage,
-        FriendsPage
+        FriendsPage,
+        AuthPage
     }
 }

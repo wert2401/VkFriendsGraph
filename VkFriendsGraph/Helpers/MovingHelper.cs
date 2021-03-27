@@ -26,7 +26,7 @@ namespace VkFriendsGraph.Helpers
         private static Canvas canvas = null;
         private static ScaleTransform scale = null;
         private static int movingStep = 30;
-        private static double scaleStep = 0.1;
+        private static double scaleStep = 0.80;
 
         public static Canvas Canvas
         {
@@ -47,7 +47,7 @@ namespace VkFriendsGraph.Helpers
                 return;
             }
 
-            Thickness t = Canvas.Margin;
+            Thickness t = canvas.Margin;
 
             switch (direction)
             {
@@ -92,12 +92,12 @@ namespace VkFriendsGraph.Helpers
             switch (zooming)
             {
                 case Zooming.ZoomIn:
-                    scale.ScaleX += scaleStep;
-                    scale.ScaleY += scaleStep;
+                    scale.ScaleX /= scaleStep;
+                    scale.ScaleY /= scaleStep;
                     break;
                 case Zooming.ZoomOut:
-                    scale.ScaleX -= scaleStep;
-                    scale.ScaleY -= scaleStep;
+                    scale.ScaleX *= scaleStep;
+                    scale.ScaleY *= scaleStep;
                     break;
                 default:
                     break;

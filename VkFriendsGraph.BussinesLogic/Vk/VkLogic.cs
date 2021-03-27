@@ -4,6 +4,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Drawing;
 using VkFriendsGraph.BussinesLogic.TokenHelper;
+using System.Net;
+using System.Diagnostics;
 
 namespace VkFriendsGraph.BussinesLogic.Vk
 {
@@ -13,12 +15,19 @@ namespace VkFriendsGraph.BussinesLogic.Vk
         private string vkPath = "https://vk.com/";
         private string token = null;
 
-        public VkLogic()
+        public VkLogic(bool useUserAuth = true)
         {
-            token ??= FileManager.GetToken();
+            if (useUserAuth)
+            {
+                token = AuthAndGetToken();
+            }
+            else
+            {
+                token = FileManager.GetToken();
+            }
         }
 
-        public async Task<List<Person>> GetPersonFriends(int id)
+        public async Task<List<Person>> GetPersonFriendsAsync(int id)
         {
             string[] fields = new string[] { "bdate", "city", "photo_200_orig" };
             Dictionary<string, string> pars = new Dictionary<string, string>() { { "user_id", id.ToString() }, { "name_case", "nom" }, { "count", "200" }, { "order", "name" } };
@@ -29,9 +38,9 @@ namespace VkFriendsGraph.BussinesLogic.Vk
             return people;
         }
 
-        public async Task<List<Person>> GetPersonFriends(string address)
+        public async Task<List<Person>> GetPersonFriendsAsync(string address)
         {
-            string id = await GetPersonId(address);
+            string id = await GetPersonIdAsync(address);
             if (id == "") throw new System.Exception("Cant get id of a person");
 
             string[] fields = new string[] { "bdate", "city", "photo_200_orig" };
@@ -43,29 +52,21 @@ namespace VkFriendsGraph.BussinesLogic.Vk
             return people;
         }
 
-        public async Task<string> GetPersonId(string address)
-        {
-            if (!address.Contains(vkPath))
-            {
-                address = vkPath + address;
-            }
-            string rBody = await MyHttpClient.Get(address);
-            string pattern = "([0-9]+)_([0-9]+)";
-            string id = Regex.Match(rBody, pattern).ToString();
-            return id.Split('_')[0];
-        }
 
-        public async Task<string> GetPerson(int id)
+        public async Task<Person> GetPersonAsync(int id)
         {
+            string[] fields = new string[] { "photo_200_orig" };
             Dictionary<string, string> pars = new Dictionary<string, string>() { { "user_ids", id.ToString() }, { "name_case", "Nom" } };
             string method = "users.get";
 
-            return await MyHttpClient.Get(GetMethodUri(method, pars));
+            string result = await MyHttpClient.Get(GetMethodUri(method, pars, fields));
+            Person person = JSONProcessor.ParsePerson(result);
+            return person;
         }
 
-        public async Task<Person> GetPerson(string address)
+        public async Task<Person> GetPersonAsync(string address)
         {
-            string id = await GetPersonId(address);
+            string id = await GetPersonIdAsync(address);
             if (id == "") throw new System.Exception("Cant get id of a person");
 
             string[] fields = new string[] { "photo_200_orig" };
@@ -77,7 +78,42 @@ namespace VkFriendsGraph.BussinesLogic.Vk
             return person;
         }
 
-        string GetMethodUri(string methodName, Dictionary<string, string> pars, string[] fields)
+        public async Task<string> GetPersonIdAsync(string address)
+        {
+            if (!address.Contains(vkPath))
+            {
+                address = vkPath + address;
+            }
+            string rBody = await MyHttpClient.Get(address);
+            string pattern = "([0-9]+)_([0-9]+)";
+            string id = Regex.Match(rBody, pattern).ToString();
+            return id.Split('_')[0];
+        }
+
+        private string AuthAndGetToken()
+        {
+            string url = "https://oauth.vk.com/authorize?client_id=7154369&display=page&redirect_uri=http://localhost:8888/vkgraph/&scope=friends&response_type=token&v=5.130&state=123456";
+            string token;
+            string prefix = "http://localhost:8888/vkgraph/";
+
+            using (HttpListener httpListener = new HttpListener())
+            {
+                httpListener.Prefixes.Add(prefix);
+                httpListener.Start();
+
+                url = url.Replace("&", "^&");
+                Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
+
+                HttpListenerContext context = httpListener.GetContext();
+                HttpListenerRequest request = context.Request;
+                token = request.UrlReferrer.ToString();
+            }
+            return token;
+        }
+
+
+
+        private string GetMethodUri(string methodName, Dictionary<string, string> pars, string[] fields)
         {
             string methodUri = apiPath;
             methodUri += methodName + "?";
@@ -94,7 +130,7 @@ namespace VkFriendsGraph.BussinesLogic.Vk
             return methodUri;
         }
 
-        string GetMethodUri(string methodName, Dictionary<string, string> pars)
+        private string GetMethodUri(string methodName, Dictionary<string, string> pars)
         {
             string methodUri = apiPath;
             methodUri += methodName + "?";

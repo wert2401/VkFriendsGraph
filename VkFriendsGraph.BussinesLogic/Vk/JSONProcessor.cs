@@ -10,6 +10,8 @@ namespace VkFriendsGraph.BussinesLogic.Vk
     {
         public static List<Person> ParsePeople(string response)
         {
+            TryParseError(response);
+            
             JObject o = JObject.Parse(response);
             List<Person> people = o["response"]["items"].ToObject<List<Person>>();
             return people;
@@ -17,20 +19,21 @@ namespace VkFriendsGraph.BussinesLogic.Vk
 
         public static Person ParsePerson(string response)
         {
+            TryParseError(response);
+
             JObject o = JObject.Parse(response);
             Person p = o["response"].ToObject<List<Person>>()[0];
             return p;
         }
 
-        public static bool TryParseError(string response)
+        public static void TryParseError(string response)
         {
             Error e;
             e = JsonConvert.DeserializeObject<Error>(response);
             if (e.ErrorObject != null)
             {
-                return true;
+                throw new Exception(e.ErrorObject.ToString());
             }
-            return false;
         }
     }
 }
