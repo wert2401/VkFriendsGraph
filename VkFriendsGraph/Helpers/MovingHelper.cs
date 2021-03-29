@@ -86,8 +86,8 @@ namespace VkFriendsGraph.Helpers
                 scale.ScaleY = 1;
             }
 
-            scale.CenterX = canvas.ActualWidth / 2;
-            scale.CenterY = canvas.ActualHeight / 2;
+            scale.CenterX = 0;
+            scale.CenterY = 0;
 
             switch (zooming)
             {

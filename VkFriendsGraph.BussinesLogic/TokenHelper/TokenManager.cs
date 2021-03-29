@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace VkFriendsGraph.BussinesLogic.TokenHelper
 {
-    static class FileManager
+    static class TokenManager
     {
         static public string GetToken()
         {

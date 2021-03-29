@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,28 +20,41 @@ namespace VkFriendsGraph.Pages
     /// </summary>
     public partial class FriendsPage : Page
     {
-        private Point center;
+        private string initAddress;
 
         public FriendsPage(object address)
         {
             InitializeComponent();
+
             //Initialize canvas that will be moving around
             MovingHelper.Canvas = MainCanvas;
-            center = new Point(SystemParameters.PrimaryScreenWidth / 2d, SystemParameters.PrimaryScreenHeight / 2d);
+            MainCanvas.Background = Brushes.Aqua;
+            MainCanvas.Margin = new Thickness(SystemParameters.PrimaryScreenWidth / 2d, SystemParameters.PrimaryScreenHeight / 2d, 0, 0);
 
             var pageVm = new FriendsPageViewModel();
-            pageVm.PeopleUpdated += OnPeopleUpdated;
+            pageVm.PeopleUpdated += OnElementsUpdated;
             pageVm.ErrorOcured += OnErrorOccured;
             DataContext = pageVm;
+            initAddress = (string)address;
 
-            pageVm.OnFriendsSearchByAddressAsync((string)address);
+            Loaded += FriendsPage_Loaded;
         }
 
-        private void OnPeopleUpdated(Node<Person> node)
+        private void OnElementsUpdated(List<Node<Person>> nodes)
         {
             MainCanvas.Children.Clear();
-            ShowFriendNode(node, center);
-            ShowChildrenInLine(node, center, 2);
+
+            Stopwatch sw = new Stopwatch();
+
+            sw.Start();
+            List<UIElement> graph = CreateGraph(nodes[0]);
+            sw.Stop();
+            tbCreatingTimer.Text = sw.ElapsedMilliseconds.ToString();
+
+            sw.Restart();
+            graph.ForEach((e) => { MainCanvas.Children.Add(e); });
+            sw.Stop();
+            tbRenderingTimer.Text = sw.ElapsedMilliseconds.ToString();
         }
 
         private void OnErrorOccured()
@@ -48,93 +62,80 @@ namespace VkFriendsGraph.Pages
             MessageBox.Show("Error occured, probably profile is closed");
         }
 
-        private void ShowChildrenInCircle(Node<Person> node, Point centerPoint)
+        private async Task<List<UIElement>> CreateGraphAsync(Node<Person> node)
         {
-            List<Node<Person>> people = node.ChildrenNodes;
+            return await Task.Run(() => CreateGraph(node));
+        }
 
-            double alphaStep = 2 * Math.PI / people.Count;
-            double alpha = 0;
-            double offset = people.Count * 10;
+        private List<UIElement> CreateGraph(Node<Person> node, double animationDuration = 0)
+        {
+            List<UIElement> graph = new List<UIElement>();
+            FriendNode rootNode = CreateFriendNode(node, new Point(0, 0));
 
+            graph.Add(rootNode);
 
-            double x = centerPoint.X + offset * Math.Sin(alpha);
-            double y = centerPoint.Y + offset * Math.Cos(alpha);
+            List<UIElement> children = CreateChildren(rootNode, animationDuration);
 
-            Point currentPos = new Point(x, y);
+            graph.AddRange(children);
 
-            foreach (Node<Person> p in people)
+            return graph;
+        }
+
+        private FriendNode CreateFriendNode(Node<Person> personNode, Point endPosition, Point beginPosition = new Point(), double duration = 0)
+        {
+            FriendNode fn = new FriendNode();
+            fn.PersonNode = personNode;
+            fn.SetZIndex(2);
+
+            fn.MouseDown += FriendNode_MouseDown;
+            if (duration <= 0)
             {
-
-                ShowLineAndAnimate(centerPoint, currentPos);
-                ShowFriendNode(p, currentPos);
-
-                alpha += alphaStep;
-                x = centerPoint.X + offset * Math.Sin(alpha);
-                y = centerPoint.Y + offset * Math.Cos(alpha);
-                currentPos.X = x;
-                currentPos.Y = y;
+                fn.SetPosition(endPosition);
             }
-        }
-
-        private FriendNode ShowFriendNode(Node<Person> personNode, Point position)
-        {
-            FriendNode fn = new FriendNode();
-            fn.PersonNode = personNode;
-            fn.SetZIndex(2);
-
-            fn.SetPosition(position);
-
-            fn.MouseDown += FriendNode_MouseDown;
-
-            MainCanvas.Children.Add(fn);
+            else
+            {
+                fn.Move(beginPosition, endPosition, duration);
+            }
 
             return fn;
         }
 
-        private FriendNode ShowFriendNode(Node<Person> personNode, Point beginPosition, Point endPosition, double duration)
+        //Recursive method to create all children of node
+        private List<UIElement> CreateChildren(FriendNode node, double duration)
         {
-            FriendNode fn = new FriendNode();
-            fn.PersonNode = personNode;
-            fn.SetZIndex(2);
-
-            fn.MouseDown += FriendNode_MouseDown;
-            fn.Move(beginPosition, endPosition, duration);
-
-            MainCanvas.Children.Add(fn);
-
-            return fn;
-        }
-
-        private void ShowChildrenInLine(Node<Person> node, Point centerPoint, double duration)
-        {
-            List<Node<Person>> people = node.ChildrenNodes;
+            List<UIElement> childrenElements = new List<UIElement>();
+            List<Node<Person>> people = node.PersonNode.ChildrenNodes;
             double downOffset = 300;
             double betweenOffset = 60;
 
-            double x = centerPoint.X - ((people.Count - 1) * betweenOffset) / 2d;
-            double y = centerPoint.Y + downOffset; 
+            Point rootNodePos = node.Position;
+            double x = rootNodePos.X - ((people.Count - 1) * betweenOffset) / 2d;
+            double y = rootNodePos.Y + downOffset;
             Point curPos = new Point(x, y);
 
             if (people == null)
             {
-                return;
+                return null;
             }
 
             foreach (var person in people)
             {
-                ShowLineAndAnimate(centerPoint, curPos, duration);
-                FriendNode friendNode = ShowFriendNode(person, centerPoint, curPos, duration);
+                Line line = CreateLine(rootNodePos, curPos, duration);
+                FriendNode friendNode = CreateFriendNode(person, curPos, rootNodePos, duration);
 
-                //Do not showing children, need to fix
-                //friendNode.Storyboard.Completed += (object sender, EventArgs args) => { ShowChildrenInLine(person, curPos, duration); };
+                List<UIElement> elements = CreateChildren(friendNode, duration);
 
-                ShowChildrenInLine(person, curPos, duration);
                 curPos.X += betweenOffset;
 
+                childrenElements.Add(line);
+                childrenElements.Add(friendNode);
+                childrenElements.AddRange(elements);
             }
+
+            return childrenElements;
         }
 
-        private void ShowLineAndAnimate(Point beginPoint, Point endPoint, double duration = 0)
+        private Line CreateLine(Point beginPoint, Point endPoint, double duration = 0)
         {
             Line line = new Line();
             if (duration <= 0)
@@ -148,16 +149,22 @@ namespace VkFriendsGraph.Pages
             {
                 line.Move(beginPoint, endPoint, duration);
             }
+
             line.Stroke = Brushes.Black;
-            MainCanvas.Children.Add(line);
+            return line;
         }
 
         private async void FriendNode_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is FriendNode fn)
             {
-                await (DataContext as FriendsPageViewModel).OnFriendSearchByNodeAsync(fn.PersonNode);
+                await (DataContext as FriendsPageViewModel).SearchFriendsByNodeAsync(fn.PersonNode);
             }
+        }
+
+        private async void FriendsPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            await (DataContext as FriendsPageViewModel).SearchFriendsByAddressAsync(initAddress);
         }
     }
 }
