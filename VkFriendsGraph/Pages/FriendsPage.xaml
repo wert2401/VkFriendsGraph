@@ -6,7 +6,20 @@
       mc:Ignorable="d" 
       Title="FriendsPage">
 
-    <Grid x:Name="MainGrid" Background="LightYellow">
+    <Grid x:Name="MainGrid" MinHeight="500" MinWidth="500" Background="LightYellow">
+        <StackPanel MinHeight="100" MinWidth="100" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                    Margin="10" Background="WhiteSmoke">
+            <StackPanel Margin="5" Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Time of creating graph: " />
+                    <TextBlock x:Name="tbCreatingTimer" Text="0" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Time of rendering graph: " />
+                    <TextBlock x:Name="tbRenderingTimer" Text="0" />
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
         <Canvas x:Name="MainCanvas">
             
         </Canvas>

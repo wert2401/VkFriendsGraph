@@ -5,14 +5,19 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
 using VkFriendsGraph.BussinesLogic.Vk;
 using VkFriendsGraph.Graph;
+using VkFriendsGraph.Helpers;
+using VkFriendsGraph.Pages;
 
 namespace VkFriendsGraph.ViewModels
 {
     public class FriendsPageViewModel
     {
-        public Action<Node<Person>> PeopleUpdated { get; set; }
+        public Action<List<Node<Person>>> PeopleUpdated { get; set; }
         public Action ErrorOcured { get; set; }
 
         private List<Node<Person>> rootNodes = new List<Node<Person>>();
@@ -24,7 +29,7 @@ namespace VkFriendsGraph.ViewModels
             vk = new VkLogic(false);
         }
 
-        public async Task OnFriendSearchByNodeAsync(Node<Person> node)
+        public async Task SearchFriendsByNodeAsync(Node<Person> node)
         {
             try
             {
@@ -33,7 +38,8 @@ namespace VkFriendsGraph.ViewModels
                 lastRootNode.ChildrenNodes.Clear();
                 lastRootNode.ChildrenNodes.Add(nodeToAdd);
                 rootNodes.Add(nodeToAdd);
-                PeopleUpdated?.Invoke(rootNodes[0]);
+
+                PeopleUpdated?.Invoke(rootNodes);
             }
             catch (Exception)
             {
@@ -41,12 +47,13 @@ namespace VkFriendsGraph.ViewModels
             }
         }
 
-        public async Task OnFriendsSearchByAddressAsync(string address)
+        public async Task SearchFriendsByAddressAsync(string address)
         {
             try
             {
                 rootNodes.Add(await GetPersonNodeAsync(address));
-                PeopleUpdated?.Invoke(rootNodes[0]);
+
+                PeopleUpdated?.Invoke(rootNodes);
             }
             catch (Exception)
             {

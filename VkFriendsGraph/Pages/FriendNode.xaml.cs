@@ -22,8 +22,7 @@ namespace VkFriendsGraph.Pages
     /// </summary>
     public partial class FriendNode : UserControl
     {
-
-        private Node<Person> personNode;
+        public Point Position { get; private set; }
         public Storyboard Storyboard { get; private set; }
         public Node<Person> PersonNode { 
             get { return personNode; } 
@@ -40,12 +39,11 @@ namespace VkFriendsGraph.Pages
             set { SetValue(ImageUrlProperty, value); }
         }
 
-        public Point Position { get; private set; }
-
         // Using a DependencyProperty as the backing store for ImageUrl.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ImageUrlProperty =
             DependencyProperty.Register("ImageUrl", typeof(string), typeof(FriendNode), new PropertyMetadata("https://sun4-15.userapi.com/s/v1/if1/rNS4wd4pzI-Szx8pOqcKnoXluFcC66SaekEGVi-6DcgtO6ie8ItEhFgkW9HIXuch33haOchp.jpg?size=200x0&quality=96&crop=32,221,1113,1567&ava=1"));
 
+        private Node<Person> personNode;
         public FriendNode()
         {
             InitializeComponent();
@@ -58,20 +56,26 @@ namespace VkFriendsGraph.Pages
 
         public void SetPosition(Point point)
         {
-            Position = GetCenterPosition(point);
-            Canvas.SetLeft(this, Position.X);
-            Canvas.SetTop(this, Position.Y);
+            Position = point;
+            Point centerPos = GetCenterPosition(point);
+            Canvas.SetLeft(this, centerPos.X);
+            Canvas.SetTop(this, centerPos.Y);
         }
 
         //Returns Point that is offsetted by widht and height, so element is in the center of Point
         private Point GetCenterPosition(Point point)
         {
-            return new Point(point.X - Width / 2d, point.Y - Height / 2d);
+            double newX = point.X - Width / 2d;
+            double newY = point.Y - Height / 2d;
+
+            return new Point(newX, newY);
         }
 
         public void Move(Point beginPosition, Point endPosition, double duration)
         {
             Storyboard.Children.Clear();
+
+            Position = endPosition;
 
             beginPosition = GetCenterPosition(beginPosition);
             endPosition = GetCenterPosition(endPosition);

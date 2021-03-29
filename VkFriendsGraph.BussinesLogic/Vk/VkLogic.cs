@@ -23,7 +23,7 @@ namespace VkFriendsGraph.BussinesLogic.Vk
             }
             else
             {
-                token = FileManager.GetToken();
+                token = TokenManager.GetToken();
             }
         }
 
@@ -94,7 +94,6 @@ namespace VkFriendsGraph.BussinesLogic.Vk
         {
             string url = "https://oauth.vk.com/authorize?client_id=7154369&display=page&redirect_uri=https://oauth.vk.com/blank.html&&response_type=token&v=5.130&state=123456";
             string token;
-            string prefix = "http://localhost:8888/vkgraph/";
 
             using (HttpClient httpClient = new HttpClient())
             {
