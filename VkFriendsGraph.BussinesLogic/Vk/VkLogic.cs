@@ -92,21 +92,14 @@ namespace VkFriendsGraph.BussinesLogic.Vk
 
         private string AuthAndGetToken()
         {
-            string url = "https://oauth.vk.com/authorize?client_id=7154369&display=page&redirect_uri=http://localhost:8888/vkgraph/&scope=friends&response_type=token&v=5.130&state=123456";
+            string url = "https://oauth.vk.com/authorize?client_id=7154369&display=page&redirect_uri=https://oauth.vk.com/blank.html&&response_type=token&v=5.130&state=123456";
             string token;
             string prefix = "http://localhost:8888/vkgraph/";
 
-            using (HttpListener httpListener = new HttpListener())
+            using (HttpClient httpClient = new HttpClient())
             {
-                httpListener.Prefixes.Add(prefix);
-                httpListener.Start();
-
-                url = url.Replace("&", "^&");
-                Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
-
-                HttpListenerContext context = httpListener.GetContext();
-                HttpListenerRequest request = context.Request;
-                token = request.UrlReferrer.ToString();
+                HttpResponseMessage resp = httpClient.GetAsync(url).Result;
+                token = resp.Content.ReadAsStringAsync().Result;
             }
             return token;
         }
