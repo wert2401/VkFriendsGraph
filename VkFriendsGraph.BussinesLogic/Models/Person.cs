@@ -28,7 +28,7 @@ namespace VkFriendsGraph.BussinesLogic.Vk
         [JsonProperty("city")]
         public City City { get; set; }
 
-        [JsonProperty("photo_200_orig")]
+        [JsonProperty("photo_50")]
         public string PhotoUrl { get; set; }
         public string FullName {
             get

@@ -29,7 +29,7 @@ namespace VkFriendsGraph.BussinesLogic.Vk
 
         public async Task<List<Person>> GetPersonFriendsAsync(int id)
         {
-            string[] fields = new string[] { "bdate", "city", "photo_200_orig" };
+            string[] fields = new string[] { "bdate", "city", "photo_50" };
             Dictionary<string, string> pars = new Dictionary<string, string>() { { "user_id", id.ToString() }, { "name_case", "nom" }, { "count", "200" }, { "order", "name" } };
             string method = "friends.get";
 
@@ -43,7 +43,7 @@ namespace VkFriendsGraph.BussinesLogic.Vk
             string id = await GetPersonIdAsync(address);
             if (id == "") throw new System.Exception("Cant get id of a person");
 
-            string[] fields = new string[] { "bdate", "city", "photo_200_orig" };
+            string[] fields = new string[] { "bdate", "city", "photo_50" };
             Dictionary<string, string> pars = new Dictionary<string, string>() { { "user_id", id }, { "name_case", "nom" }, { "count", "200" }, { "order", "name" } };
             string method = "friends.get";
 
@@ -55,7 +55,7 @@ namespace VkFriendsGraph.BussinesLogic.Vk
 
         public async Task<Person> GetPersonAsync(int id)
         {
-            string[] fields = new string[] { "photo_200_orig" };
+            string[] fields = new string[] { "photo_50" };
             Dictionary<string, string> pars = new Dictionary<string, string>() { { "user_ids", id.ToString() }, { "name_case", "Nom" } };
             string method = "users.get";
 
@@ -69,7 +69,7 @@ namespace VkFriendsGraph.BussinesLogic.Vk
             string id = await GetPersonIdAsync(address);
             if (id == "") throw new System.Exception("Cant get id of a person");
 
-            string[] fields = new string[] { "photo_200_orig" };
+            string[] fields = new string[] { "photo_50" };
             Dictionary<string, string> pars = new Dictionary<string, string>() { { "user_ids", id }, { "name_case", "Nom" } };
             string method = "users.get";
 
